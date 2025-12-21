@@ -9,7 +9,7 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Manage your personal library, track reading progress, and discover new books with Shelfie.' }
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+        { rel: 'icon', type: 'image/svg+xml', href: '/prj-shelfie/favicon.svg' }
       ]
     }
   },
