@@ -1,6 +1,6 @@
-# Nuxt Minimal Starter
+# Shelfie
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A simple bookshelf manager built with Nuxt 3.
 
 ## Setup
 
