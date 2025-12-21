@@ -30,10 +30,14 @@ export const useBooksStore = defineStore('books', () => {
   function updateBook(id: string, updates: Partial<Book>) {
     const index = books.value.findIndex(b => b.id === id)
     if (index !== -1) {
-      books.value[index] = {
-        ...books.value[index],
-        ...updates,
-        updatedAt: new Date().toISOString()
+      const existingBook = books.value[index]
+      if (existingBook) {
+        books.value[index] = {
+          ...existingBook,
+          ...updates,
+          id: existingBook.id,
+          updatedAt: new Date().toISOString()
+        } as Book
       }
     }
   }
@@ -75,5 +79,10 @@ export const useBooksStore = defineStore('books', () => {
     deleteComment
   }
 }, {
-  persist: true
+  persist: {
+    storage: {
+      getItem: (key) => typeof window !== 'undefined' ? localStorage.getItem(key) : null,
+      setItem: (key, value) => typeof window !== 'undefined' ? localStorage.setItem(key, value) : null,
+    },
+  }
 })

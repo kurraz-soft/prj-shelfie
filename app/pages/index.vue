@@ -1,17 +1,62 @@
 <script setup lang="ts">
 import { useBooksStore } from '~/stores/books'
+import { Search, ArrowUpDown } from 'lucide-vue-next'
 
 const store = useBooksStore()
 const currentTab = ref('all')
 const editingBookId = ref<string | null>(null)
+const searchQuery = ref('')
+const sortBy = ref('date-desc')
 
 const filteredBooks = computed(() => {
+  let books = []
   switch (currentTab.value) {
-    case 'reading': return store.readingBooks
-    case 'will-read': return store.willReadBooks
-    case 'dropped': return store.droppedBooks
-    default: return store.books
+    case 'reading': 
+      books = [...store.readingBooks]
+      break
+    case 'will-read': 
+      books = [...store.willReadBooks]
+      break
+    case 'dropped': 
+      books = [...store.droppedBooks]
+      break
+    default: 
+      books = [...store.books]
   }
+
+  // Search filter
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase().trim()
+    if (query.startsWith('#')) {
+      const tagQuery = query.substring(1)
+      books = books.filter(book => 
+        book.tags.some(tag => tag.toLowerCase().includes(tagQuery))
+      )
+    } else {
+      books = books.filter(book => 
+        book.title.toLowerCase().includes(query) ||
+        book.author.toLowerCase().includes(query)
+      )
+    }
+  }
+
+  // Sort
+  books.sort((a, b) => {
+    switch (sortBy.value) {
+      case 'title-asc':
+        return a.title.localeCompare(b.title)
+      case 'title-desc':
+        return b.title.localeCompare(a.title)
+      case 'date-asc':
+        return new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime()
+      case 'date-desc':
+        return new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime()
+      default:
+        return 0
+    }
+  })
+
+  return books
 })
 
 const counts = computed(() => ({
@@ -52,6 +97,35 @@ function handleEdit(id: string) {
         </div>
       </div>
 
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-card p-4 rounded-xl border shadow-sm">
+        <div class="relative w-full sm:max-w-xs">
+          <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            v-model="searchQuery"
+            placeholder="Search title, author or #tag..."
+            class="pl-9"
+          />
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-medium text-muted-foreground whitespace-nowrap flex items-center gap-1">
+            <ArrowUpDown class="h-3.5 w-3.5" />
+            Sort by:
+          </span>
+          <Select v-model="sortBy">
+            <SelectTrigger class="w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="date-desc">Date Added (Newest)</SelectItem>
+              <SelectItem value="date-asc">Date Added (Oldest)</SelectItem>
+              <SelectItem value="title-asc">Title (A-Z)</SelectItem>
+              <SelectItem value="title-desc">Title (Z-A)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       <BookList 
         :books="filteredBooks" 
         @delete="handleDelete"
@@ -63,11 +137,15 @@ function handleEdit(id: string) {
                <span class="text-4xl">📚</span>
              </div>
              <div class="space-y-2">
-               <h3 class="font-semibold text-lg">No books found</h3>
+               <h3 class="font-semibold text-lg">{{ searchQuery ? 'No matching books' : 'No books found' }}</h3>
                <p class="text-muted-foreground text-sm max-w-sm mx-auto">
-                 You haven't added any books to this category yet. Start managing your library today!
+                 {{ searchQuery 
+                  ? "We couldn't find any books matching your search. Try different keywords." 
+                  : "You haven't added any books to this category yet. Start managing your library today!" 
+                 }}
                </p>
-               <AddBookDialog />
+               <AddBookDialog v-if="!searchQuery" />
+               <Button v-else variant="outline" @click="searchQuery = ''">Clear search</Button>
              </div>
           </div>
         </template>
