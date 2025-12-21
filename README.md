@@ -5,6 +5,18 @@ A simple bookshelf manager built with Nuxt 3.
 ## Setup
 
 Make sure to install dependencies:
+## Deployment
+
+This project is configured for deployment to **GitHub Pages** via GitHub Actions.
+
+Every push to the `main` branch will automatically trigger a build and deploy.
+
+### GitHub Pages Settings
+To finish the setup in your GitHub repository:
+1. Go to **Settings** > **Pages**.
+2. Under **Build and deployment**, set **Source** to `GitHub Actions`.
+
+The site will be available at `https://<your-username>.github.io/prj-shelfie/`.
 
 ```bash
 # npm
