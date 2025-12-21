@@ -1,6 +1,6 @@
 # Shelfie
 
-A simple bookshelf manager built with Nuxt 3.
+A simple bookshelf manager built with Nuxt 4.
 
 ## Setup
 
