@@ -10,18 +10,10 @@ const sortBy = ref('date-desc')
 
 const filteredBooks = computed(() => {
   let books = []
-  switch (currentTab.value) {
-    case 'reading': 
-      books = [...store.readingBooks]
-      break
-    case 'will-read': 
-      books = [...store.willReadBooks]
-      break
-    case 'dropped': 
-      books = [...store.droppedBooks]
-      break
-    default: 
-      books = [...store.books]
+  if (currentTab.value === 'all') {
+    books = [...store.books]
+  } else {
+    books = store.books.filter(b => b.status === currentTab.value)
   }
 
   // Search filter
@@ -51,6 +43,10 @@ const filteredBooks = computed(() => {
         return new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime()
       case 'date-desc':
         return new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime()
+      case 'rating-desc':
+        return b.rating - a.rating
+      case 'rating-asc':
+        return a.rating - b.rating
       default:
         return 0
     }
@@ -59,12 +55,15 @@ const filteredBooks = computed(() => {
   return books
 })
 
-const counts = computed(() => ({
-  all: store.books.length,
-  reading: store.readingBooks.length,
-  'will-read': store.willReadBooks.length,
-  dropped: store.droppedBooks.length
-}))
+const counts = computed(() => {
+  const c: Record<string, number> = {
+    all: store.books.length
+  }
+  store.books.forEach(book => {
+    c[book.status] = (c[book.status] || 0) + 1
+  })
+  return c
+})
 
 function handleDelete(id: string) {
   if (confirm('Are you sure you want to delete this book?')) {
@@ -119,6 +118,8 @@ function handleEdit(id: string) {
             <SelectContent>
               <SelectItem value="date-desc">Date Added (Newest)</SelectItem>
               <SelectItem value="date-asc">Date Added (Oldest)</SelectItem>
+              <SelectItem value="rating-desc">Rating (Highest)</SelectItem>
+              <SelectItem value="rating-asc">Rating (Lowest)</SelectItem>
               <SelectItem value="title-asc">Title (A-Z)</SelectItem>
               <SelectItem value="title-desc">Title (Z-A)</SelectItem>
             </SelectContent>

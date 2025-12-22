@@ -1,4 +1,4 @@
-export type BookStatus = 'reading' | 'dropped' | 'will-read'
+export type BookStatus = 'reading' | 'dropped' | 'will-read' | 'finished'
 
 export interface Comment {
   id: string

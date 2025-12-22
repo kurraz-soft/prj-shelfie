@@ -8,6 +8,7 @@ export const useBooksStore = defineStore('books', () => {
   const readingBooks = computed(() => books.value.filter(b => b.status === "reading"))
   const droppedBooks = computed(() => books.value.filter(b => b.status === "dropped"))
   const willReadBooks = computed(() => books.value.filter(b => b.status === "will-read"))
+  const finishedBooks = computed(() => books.value.filter(b => b.status === "finished"))
   
   const allTags = computed(() => {
     const tags = new Set<string>()
@@ -71,6 +72,7 @@ export const useBooksStore = defineStore('books', () => {
     readingBooks,
     droppedBooks,
     willReadBooks,
+    finishedBooks,
     allTags,
     addBook,
     updateBook,

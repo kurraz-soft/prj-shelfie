@@ -14,6 +14,7 @@ import { Button } from '~/components/ui/button'
 import { Loader2, Search, BookOpen, Plus } from 'lucide-vue-next'
 import type { Book, BookStatus } from '~/types/book'
 import { imageUrlToBase64 } from '~/lib/utils/image'
+import { BOOK_STATUSES } from '~/constants/book'
 
 const props = defineProps<{
   bookId?: string
@@ -241,11 +242,11 @@ function handleOpenChange(val: boolean) {
                  <SelectTrigger>
                    <SelectValue placeholder="Select Status" />
                  </SelectTrigger>
-                 <SelectContent>
-                   <SelectItem value="reading">Reading</SelectItem>
-                   <SelectItem value="will-read">Will Read</SelectItem>
-                   <SelectItem value="dropped">Dropped</SelectItem>
-                 </SelectContent>
+                  <SelectContent>
+                    <SelectItem v-for="s in BOOK_STATUSES" :key="s.value" :value="s.value">
+                      {{ s.label }}
+                    </SelectItem>
+                  </SelectContent>
                </Select>
              </div>
              
