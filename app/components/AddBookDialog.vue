@@ -155,7 +155,7 @@ function handleOpenChange(val: boolean) {
       </slot>
     </DialogTrigger>
     
-    <DialogContent class="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+    <DialogContent class="!min-h-[80vh] overflow-y-auto auto-rows-max">
       <DialogHeader>
         <DialogTitle>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</DialogTitle>
         <DialogDescription>
@@ -163,50 +163,50 @@ function handleOpenChange(val: boolean) {
         </DialogDescription>
       </DialogHeader>
 
-      <div class="space-y-6 py-4">
-        <!-- Search Section (only in add mode) -->
-        <div v-if="!manualMode && !isEditMode" class="space-y-2 relative">
-          <Label>Find a Book</Label>
-          <div class="relative">
-            <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input 
-              v-model="query"
-              placeholder="Search by title, author, ISBN..." 
-              class="pl-9"
-              autocomplete="off"
-            />
-            <div v-if="loading" class="absolute right-3 top-3">
-              <Loader2 class="h-4 w-4 animate-spin text-muted-foreground" />
-            </div>
-          </div>
-          
-          <!-- Search Results Dropdown -->
-          <div v-if="showResults" class="absolute z-10 w-full mt-1 bg-popover text-popover-foreground rounded-md border shadow-md max-h-[300px] overflow-y-auto">
-            <button
-              v-for="book in results"
-              :key="book.id"
-              class="w-full text-left px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground flex gap-3 items-start transition-colors"
-              @click="selectBook(book)"
-            >
-              <div class="w-8 shrink-0 bg-muted aspect-[2/3] rounded overflow-hidden">
-                <img v-if="book.coverUrl" :src="book.coverUrl" class="w-full h-full object-cover" />
-                <BookOpen v-else class="w-full h-full p-2 text-muted-foreground" />
-              </div>
-              <div>
-                <div class="font-medium line-clamp-1">{{ book.title }}</div>
-                <div class="text-muted-foreground text-xs">{{ book.author }}</div>
-                <div v-if="book.publishedYear" class="text-xs opacity-70">{{ book.publishedYear }}</div>
-              </div>
-            </button>
-          </div>
-          
-          <div class="text-center pt-2">
-             <Button variant="link" size="sm" @click="manualMode = true" class="text-xs text-muted-foreground">
-               Or enter details manually
-             </Button>
+      <!-- Search Section (only in add mode) - moved to top -->
+      <div v-if="!manualMode && !isEditMode" class="space-y-2 relative pb-4">
+        <Label>Find a Book</Label>
+        <div class="relative">
+          <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input 
+            v-model="query"
+            placeholder="Search by title, author, ISBN..." 
+            class="pl-9"
+            autocomplete="off"
+          />
+          <div v-if="loading" class="absolute right-3 top-3">
+            <Loader2 class="h-4 w-4 animate-spin text-muted-foreground" />
           </div>
         </div>
+        
+        <!-- Search Results Dropdown -->
+        <div v-if="showResults" class="absolute z-10 w-full mt-1 bg-popover text-popover-foreground rounded-md border shadow-md max-h-[500px] overflow-y-auto">
+          <button
+            v-for="book in results"
+            :key="book.id"
+            class="w-full text-left px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground flex gap-3 items-start transition-colors"
+            @click="selectBook(book)"
+          >
+            <div class="w-8 shrink-0 bg-muted aspect-[2/3] rounded overflow-hidden">
+              <img v-if="book.coverUrl" :src="book.coverUrl" class="w-full h-full object-cover" />
+              <BookOpen v-else class="w-full h-full p-2 text-muted-foreground" />
+            </div>
+            <div>
+              <div class="font-medium line-clamp-1">{{ book.title }}</div>
+              <div class="text-muted-foreground text-xs">{{ book.author }}</div>
+              <div v-if="book.publishedYear" class="text-xs opacity-70">{{ book.publishedYear }}</div>
+            </div>
+          </button>
+        </div>
+        
+        <div class="text-center pt-2">
+           <Button variant="link" size="sm" @click="manualMode = true" class="text-xs text-muted-foreground">
+             Or enter details manually
+           </Button>
+        </div>
+      </div>
 
+      <div class="space-y-6 py-4">
         <!-- Manual Entry Form -->
         <div v-if="manualMode || isEditMode" class="space-y-4 animate-accordion-down">
           <div class="grid grid-cols-4 gap-4 items-start">
