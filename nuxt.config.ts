@@ -32,12 +32,12 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      firebaseApiKey: "AIzaSyCKT5gNzebHeIzXC1VCjK8pqrz3UclGJRQ",
-      firebaseAuthDomain: "prj-shelfie.firebaseapp.com",
-      firebaseProjectId: "prj-shelfie",
-      firebaseStorageBucket: "prj-shelfie.firebasestorage.app",
-      firebaseMessagingSenderId: "508725184018",
-      firebaseAppId: "1:508725184018:web:a04ababdb5ff1f262e7acb"
+      firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
+      firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      firebaseProjectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID,
+      firebaseStorageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      firebaseMessagingSenderId: process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+      firebaseAppId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID
     }
   }
 })
