@@ -30,4 +30,14 @@ export default defineNuxtConfig({
      */
     componentDir: 'app/components/ui'
   },
+  runtimeConfig: {
+    public: {
+      firebaseApiKey: "AIzaSyCKT5gNzebHeIzXC1VCjK8pqrz3UclGJRQ",
+      firebaseAuthDomain: "prj-shelfie.firebaseapp.com",
+      firebaseProjectId: "prj-shelfie",
+      firebaseStorageBucket: "prj-shelfie.firebasestorage.app",
+      firebaseMessagingSenderId: "508725184018",
+      firebaseAppId: "1:508725184018:web:a04ababdb5ff1f262e7acb"
+    }
+  }
 })
