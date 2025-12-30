@@ -15,16 +15,19 @@ This project requires Firebase to function for cloud sync. You need to set up a 
 
 ### Environment Variables
 
-Create a `.env` file in the root directory (or set these in your CI/CD environment) with your Firebase configuration:
+1. **Local Development**: Copy `.env.example` to `.env` and fill in your Firebase configuration keys:
+   ```bash
+   cp .env.example .env
+   ```
+2. **Production/GitHub Pages**: Add these same keys as **Secrets** in your GitHub repository (**Settings > Secrets and variables > Actions**).
 
-```bash
-NUXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
-NUXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
-NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NUXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-```
+The required variables are:
+- `NUXT_PUBLIC_FIREBASE_API_KEY`
+- `NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NUXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NUXT_PUBLIC_FIREBASE_APP_ID`
 
 ## Setup
 
