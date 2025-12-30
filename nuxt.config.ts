@@ -1,4 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+console.log('FIREBASE KEY:', process.env.NUXT_PUBLIC_FIREBASE_API_KEY);
+
 export default defineNuxtConfig({
   ssr: false,
   app: {
