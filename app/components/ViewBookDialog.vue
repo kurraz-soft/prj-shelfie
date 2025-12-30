@@ -42,10 +42,10 @@ function handleDeleteComment(commentId: string) {
 
 <template>
   <Dialog :open="open" @update:open="toggleOpen">
-    <DialogContent class="max-w-4xl overflow-hidden p-0 gap-0 border-none bg-background shadow-2xl">
-      <div class="flex flex-col md:flex-row h-full max-h-[90vh]">
+    <DialogContent class="w-[95vw] sm:max-w-4xl max-h-[95vh] sm:max-h-[92vh] overflow-hidden p-0 gap-0 border-none bg-background shadow-2xl !flex !flex-col">
+      <div class="flex flex-col md:flex-row h-full min-h-0 overflow-hidden">
         <!-- Left: Cover Image (Static) -->
-        <div class="md:w-[320px] shrink-0 bg-muted relative overflow-hidden group">
+        <div class="h-[220px] sm:h-[280px] md:h-auto md:w-[320px] shrink-0 bg-muted relative overflow-hidden group">
           <img 
             v-if="book.coverUrl" 
             :src="book.coverUrl" 
@@ -57,14 +57,22 @@ function handleDeleteComment(commentId: string) {
           </div>
           
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+
+          <!-- Mobile Close Button -->
+           <button 
+            @click="toggleOpen(false)" 
+            class="absolute top-4 right-4 md:hidden text-white/80 hover:text-white p-2 bg-black/20 hover:bg-black/40 backdrop-blur-sm rounded-full transition-all"
+          >
+            <X :size="20" />
+          </button>
           
           <div class="absolute top-4 left-4">
             <StatusBadge :status="book.status" />
           </div>
           
-          <div class="absolute bottom-6 left-6 right-6 text-white hidden md:block">
+          <div class="absolute bottom-6 left-6 right-6 text-white">
             <RatingStars :model-value="book.rating" readonly :size="20" color="white" />
-            <p class="text-xs mt-2 opacity-80 flex items-center gap-1.5">
+            <p class="text-xs mt-2 opacity-80 flex items-center gap-1.5 font-medium">
               <Calendar :size="12" />
               Added {{ new Date(book.addedAt).toLocaleDateString() }}
             </p>
@@ -72,14 +80,14 @@ function handleDeleteComment(commentId: string) {
         </div>
 
         <!-- Right: Scrollable Content -->
-        <div class="flex-grow flex flex-col min-w-0 bg-card">
-          <div class="p-8 flex-grow overflow-y-auto space-y-8 custom-scrollbar">
+        <div class="flex-grow flex flex-col min-w-0 bg-card min-h-0">
+          <div class="p-4 sm:p-6 md:p-8 flex-grow overflow-y-auto space-y-6 md:space-y-8 custom-scrollbar min-h-0">
             <!-- Header -->
             <div class="space-y-2">
-              <h2 class="text-4xl font-extrabold tracking-tight text-foreground leading-tight">
+              <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
                 {{ book.title }}
               </h2>
-              <p class="text-xl text-muted-foreground font-medium italic">
+              <p class="text-lg md:text-xl text-muted-foreground font-medium italic">
                 by {{ book.author }}
               </p>
             </div>
@@ -112,7 +120,7 @@ function handleDeleteComment(commentId: string) {
               </div>
             </div>
 
-            <!-- Comments Section -->
+            <!-- Comments Section/Notes List -->
             <div class="space-y-4 pt-4 border-t border-border/40">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2 text-sm font-bold text-foreground/80 tracking-widest uppercase">
@@ -138,48 +146,42 @@ function handleDeleteComment(commentId: string) {
                     </span>
                     <button 
                       @click="handleDeleteComment(comment.id)"
-                      class="opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-destructive transition-all"
+                      class="opacity-100 md:opacity-0 group-hover:opacity-100 p-2 md:p-1 text-muted-foreground hover:text-destructive transition-all"
                     >
-                      <Trash2 :size="12" />
+                      <Trash2 :size="14" />
                     </button>
                   </div>
-                </div>
-
-                <!-- Add Comment Form -->
-                <div class="flex gap-2 mt-4">
-                  <Input 
-                    v-model="newComment" 
-                    placeholder="Add a note or comment..." 
-                    class="h-9 text-sm bg-muted/20"
-                    @keyup.enter="handleAddComment"
-                  />
-                  <Button size="sm" class="shrink-0 h-9 px-3" @click="handleAddComment">
-                    <Send :size="14" />
-                  </Button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Footer -->
-          <div class="p-6 bg-muted/30 border-t border-border/50 flex justify-between items-center shrink-0">
-            <Button variant="ghost" size="sm" @click="toggleOpen(false)" class="text-muted-foreground hover:text-foreground">
-              Close
-            </Button>
-            <Button @click="handleEdit" class="gap-2 shadow-lg shadow-primary/20">
-              <Edit2 :size="16" />
-              Edit Book
-            </Button>
+          <!-- Bottom Area: Add Note + Actions -->
+          <div class="p-4 md:p-6 bg-muted/30 border-t border-border/50 space-y-4 shrink-0">
+            <!-- Add Comment Form -->
+            <div class="flex gap-2">
+              <Input 
+                v-model="newComment" 
+                placeholder="Add a note or comment..." 
+                class="h-10 md:h-11 text-sm bg-background border-border"
+                @keyup.enter="handleAddComment"
+              />
+              <Button size="icon" class="shrink-0 h-10 w-10 md:h-11 md:w-11" @click="handleAddComment">
+                <Send :size="16" />
+              </Button>
+            </div>
+
+            <div class="flex justify-end items-center gap-3">
+              <Button variant="ghost" @click="toggleOpen(false)" class="text-muted-foreground hover:text-foreground hidden md:flex">
+                Close
+              </Button>
+              <Button @click="handleEdit" class="h-10 md:h-11 px-6 gap-2 w-full md:w-auto shadow-lg shadow-primary/20">
+                <Edit2 :size="16" />
+                Edit Book
+              </Button>
+            </div>
           </div>
         </div>
-        
-        <!-- Close button for mobile -->
-        <button 
-          @click="toggleOpen(false)"
-          class="absolute right-4 top-4 rounded-full p-2 bg-black/20 hover:bg-black/40 text-white md:hidden backdrop-blur-sm transition-colors z-50"
-        >
-          <X :size="20" />
-        </button>
       </div>
     </DialogContent>
   </Dialog>
