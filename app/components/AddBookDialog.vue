@@ -32,7 +32,8 @@ const form = reactive({
   coverUrl: '',
   status: 'reading' as BookStatus,
   rating: 0,
-  tags: [] as string[]
+  tags: [] as string[],
+  addedAt: new Date().toISOString().split('T')[0]
 })
 
 // Store interaction
@@ -52,6 +53,7 @@ watch(() => props.bookId, (newId) => {
       form.status = book.status
       form.rating = book.rating
       form.tags = [...book.tags]
+      form.addedAt = new Date(book.addedAt).toISOString().split('T')[0]
       manualMode.value = true
       open.value = true
     }
@@ -86,6 +88,7 @@ function resetForm() {
   form.status = 'reading'
   form.rating = 0
   form.tags = []
+  form.addedAt = new Date().toISOString().split('T')[0]
   query.value = ''
   manualMode.value = false
   showResults.value = false
@@ -113,7 +116,8 @@ async function handleSubmit() {
     coverUrl: finalCoverUrl,
     status: form.status,
     rating: form.rating,
-    tags: form.tags
+    tags: form.tags,
+    addedAt: new Date(form.addedAt || Date.now()).toISOString()
   }
 
   if (isEditMode.value && props.bookId) {
@@ -257,10 +261,17 @@ function handleOpenChange(val: boolean) {
                </div>
              </div>
           </div>
-          
-          <div class="space-y-2">
-            <Label>Tags</Label>
-            <TagInput v-model="form.tags" :suggestions="store.allTags" />
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <Label>Added Date</Label>
+              <Input v-model="form.addedAt" type="date" />
+            </div>
+            
+            <div class="space-y-2">
+              <Label>Tags</Label>
+              <TagInput v-model="form.tags" :suggestions="store.allTags" />
+            </div>
           </div>
 
           <div class="space-y-2">

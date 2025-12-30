@@ -5,10 +5,12 @@ const props = withDefaults(defineProps<{
   modelValue: number
   readonly?: boolean
   size?: number
+  color?: string
 }>(), {
   modelValue: 0,
   readonly: false,
-  size: 16
+  size: 16,
+  color: undefined
 })
 
 const emit = defineEmits<{
@@ -53,9 +55,13 @@ function handleClick(star: number) {
           'transition-all',
           (hoverValue ? star <= hoverValue : star <= modelValue) 
             ? 'fill-yellow-400 text-yellow-400' 
-            : 'fill-transparent text-muted-foreground'
+            : (color ? `text-${color}` : 'text-muted-foreground'),
+          (hoverValue ? star <= hoverValue : star <= modelValue) 
+            ? '' 
+            : 'fill-transparent'
         ]"
       />
     </button>
   </div>
 </template>
+
