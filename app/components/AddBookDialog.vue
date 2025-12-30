@@ -159,7 +159,7 @@ function handleOpenChange(val: boolean) {
       </slot>
     </DialogTrigger>
     
-    <DialogContent class="!min-h-[80vh] overflow-y-auto auto-rows-max">
+    <DialogContent class="!min-h-[80vh] max-h-[80vh] overflow-y-auto auto-rows-max">
       <DialogHeader>
         <DialogTitle>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</DialogTitle>
         <DialogDescription>
