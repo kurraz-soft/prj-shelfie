@@ -42,10 +42,10 @@ function handleDeleteComment(commentId: string) {
 
 <template>
   <Dialog :open="open" @update:open="toggleOpen">
-    <DialogContent class="w-[95vw] sm:max-w-4xl max-h-[95vh] sm:max-h-[92vh] overflow-hidden p-0 gap-0 border-none bg-background shadow-2xl !flex !flex-col">
+    <DialogContent class="w-[95vw] sm:max-w-4xl max-h-[80vh] sm:max-h-[92vh] overflow-hidden p-0 gap-0 border-none bg-background shadow-2xl !flex !flex-col">
       <div class="flex flex-col md:flex-row h-full min-h-0 overflow-hidden">
         <!-- Left: Cover Image (Static) -->
-        <div class="h-[220px] sm:h-[280px] md:h-auto md:w-[320px] shrink-0 bg-muted relative overflow-hidden group">
+        <div class="h-[130px] sm:h-[280px] md:h-auto md:w-[320px] shrink-0 bg-muted relative overflow-hidden group">
           <img 
             v-if="book.coverUrl" 
             :src="book.coverUrl" 
